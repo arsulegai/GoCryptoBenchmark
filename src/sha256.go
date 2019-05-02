@@ -18,17 +18,17 @@
 package main
 
 import (
-	"github.com/jessevdk/go-flags"
-	"strconv"
 	"crypto/sha256"
-	"github.com/spacemonkeygo/openssl"
 	"errors"
+	"fmt"
+	"github.com/jessevdk/go-flags"
+	"github.com/spacemonkeygo/openssl"
 )
 
 type Sha256 struct {
-	CryptoAlgorithm
+	*CryptoAlgorithm
 	Args struct {
-		Algorithm  string `positional-arg-name:"algorithm" required:"true" description:"Pick either crypto or openssl"`
+		Algorithm string `positional-arg-name:"algorithm" required:"true" description:"Pick either crypto or openssl"`
 	} `positional-args:"true"`
 }
 
@@ -37,19 +37,25 @@ func (s *Sha256) Name() string {
 }
 
 func (s *Sha256) Register(parent *flags.Command) error {
-	_, err := parent.AddCommand(args.Name(), "Performs benchmark for Sha256", "Computes Sha256 of random data and reports the result along with benchmark", args)
+	_, err := parent.AddCommand(s.Name(), "Performs benchmark for Sha256", "Computes Sha256 of random data and reports the result along with benchmark", s)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Sha256) Compute(data []byte) (byte[], error) {
+func (s *Sha256) Compute(data []byte) ([]byte, error) {
 	if s.Args.Algorithm == CRYPTO_ALGORITHM {
-		return sha256.Sum256(data), nil
+		result_bytes := sha256.Sum256(data)
+		return result_bytes[:], nil
 	} else if s.Args.Algorithm == OPENSSL_ALGORITHM {
-		return openssl.SHA256(data)
+		result_bytes, err := openssl.SHA256(data)
+		return result_bytes[:], err
 	} else {
-		return []byte{}, errors.New("Unknown algorithm: ", s.Args.Algorithm)
+		return []byte{}, errors.New(fmt.Sprintf("Unknown algorithm: %s", s.Args.Algorithm))
 	}
+}
+
+func (s *Sha256) Run(child interface{}) error {
+	return s.CryptoAlgorithm.Run(s)
 }

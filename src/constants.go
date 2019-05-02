@@ -19,7 +19,8 @@ package main
 
 const (
 	NUMBER_OF_INPUT_BYTES int = 16384
-	
-	CRYPTO_ALGORITHM string = "crypto"
+	LOOP_TIMES            int = 100000
+
+	CRYPTO_ALGORITHM  string = "crypto"
 	OPENSSL_ALGORITHM string = "openssl"
 )
