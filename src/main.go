@@ -24,7 +24,6 @@ import (
 	"os"
 	"strconv"
 	"time"
-	// "math/rand"
 )
 
 // All subcommands implement this interface
@@ -58,7 +57,6 @@ func (c *CryptoAlgorithm) Run(child interface{}) error {
 
 	// Create data of uint8 to perform crypto algorithm
 	data := make([]byte, NUMBER_OF_INPUT_BYTES)
-	// rand.Read(data)
 	start := time.Now()
 	var result []byte
 	var err error
@@ -68,6 +66,8 @@ func (c *CryptoAlgorithm) Run(child interface{}) error {
 			result, err = child.(*Sha256).Compute(data)
 		case *Sha512:
 			result, err = child.(*Sha512).Compute(data)
+		case *Sha384:
+			result, err = child.(*Sha384).Compute(data)
 		default:
 			break
 		}
@@ -102,6 +102,7 @@ func main() {
 	commands := []Command{
 		&Sha256{},
 		&Sha512{},
+		&Sha384{},
 	}
 
 	for _, cmd := range commands {
