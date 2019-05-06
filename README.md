@@ -7,6 +7,10 @@ libraries.
 The tool will run popular cryto algorithms on the machine, reporting the
 benchmark numbers on the hardware.
 
+**Note:** The tool uses forked version of [OpenSSL wrapper](https://github.com/spacemonkeygo/openssl)
+which can be found [here](https://github.com/arsulegai/openssl).
+All credits to the original authors.
+
 ## Build
 
 ### Docker build dependencies

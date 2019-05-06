@@ -66,6 +66,8 @@ func (c *CryptoAlgorithm) Run(child interface{}) error {
 		switch child.(type) {
 		case *Sha256:
 			result, err = child.(*Sha256).Compute(data)
+		case *Sha512:
+			result, err = child.(*Sha512).Compute(data)
 		default:
 			break
 		}
@@ -99,7 +101,7 @@ func main() {
 
 	commands := []Command{
 		&Sha256{},
-		// &Sha512{},
+		&Sha512{},
 	}
 
 	for _, cmd := range commands {

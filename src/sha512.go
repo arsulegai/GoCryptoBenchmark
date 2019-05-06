@@ -18,44 +18,44 @@
 package main
 
 import (
-	"crypto/sha256"
+	"crypto/sha512"
 	"errors"
 	"fmt"
 	"github.com/jessevdk/go-flags"
 	"github.com/arsulegai/openssl"
 )
 
-type Sha256 struct {
+type Sha512 struct {
 	*CryptoAlgorithm
 	Args struct {
 		Algorithm string `positional-arg-name:"algorithm" required:"true" description:"Pick either crypto or openssl"`
 	} `positional-args:"true"`
 }
 
-func (s *Sha256) Name() string {
-	return "Sha256"
+func (s *Sha512) Name() string {
+	return "Sha512"
 }
 
-func (s *Sha256) Register(parent *flags.Command) error {
-	_, err := parent.AddCommand(s.Name(), "Performs benchmark for Sha256", "Computes Sha256 of random data and reports the result along with benchmark", s)
+func (s *Sha512) Register(parent *flags.Command) error {
+	_, err := parent.AddCommand(s.Name(), "Performs benchmark for Sha512", "Computes Sha512 of random data and reports the result along with benchmark", s)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Sha256) Compute(data []byte) ([]byte, error) {
+func (s *Sha512) Compute(data []byte) ([]byte, error) {
 	if s.Args.Algorithm == CRYPTO_ALGORITHM {
-		result_bytes := sha256.Sum256(data)
+		result_bytes := sha512.Sum512(data)
 		return result_bytes[:], nil
 	} else if s.Args.Algorithm == OPENSSL_ALGORITHM {
-		result_bytes, err := openssl.SHA256(data)
+		result_bytes, err := openssl.SHA512(data)
 		return result_bytes[:], err
 	} else {
 		return []byte{}, errors.New(fmt.Sprintf("Unknown algorithm: %s", s.Args.Algorithm))
 	}
 }
 
-func (s *Sha256) Run(child interface{}) error {
+func (s *Sha512) Run(child interface{}) error {
 	return s.CryptoAlgorithm.Run(s)
 }

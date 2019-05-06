@@ -38,7 +38,7 @@ ENV PATH=$PATH:$GOBIN
 
 RUN go get -u \
     github.com/jessevdk/go-flags \
-    github.com/spacemonkeygo/openssl
+    github.com/arsulegai/openssl
 
 WORKDIR /project/GoCryptoBenchmark/src
 
