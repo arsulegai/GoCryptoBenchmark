@@ -19,12 +19,27 @@ RUN apt-get update \
   wget \
   git \
   pkg-config \
-  libssl-dev
+  libssl-dev \
+  gcc \
+  make
+
+RUN mkdir -p /openssl
+WORKDIR /openssl
+
+RUN wget --no-check-certificate https://www.openssl.org/source/openssl-1.1.1a.tar.gz \
+  && tar -zxf openssl-1.1.1a.tar.gz && cd openssl-1.1.1a \
+  && ./config \
+  && make \
+  && make test \
+  && mv /usr/bin/openssl ~/tmp \
+  && make install \
+  && ln -s /usr/local/bin/openssl /usr/bin/openssl \
+  && ldconfig
 
 RUN mkdir -p /go/
 WORKDIR /go/
 
-RUN wget https://dl.google.com/go/go1.12.2.linux-amd64.tar.gz \
+RUN wget --no-check-certificate https://dl.google.com/go/go1.12.2.linux-amd64.tar.gz \
   && tar -xf go1.12.2.linux-amd64.tar.gz \
   && mv ./go/* . \
   && rm go1.12.2.linux-amd64.tar.gz
@@ -38,7 +53,8 @@ ENV PATH=$PATH:$GOBIN
 
 RUN go get -u \
     github.com/jessevdk/go-flags \
-    github.com/arsulegai/openssl
+    github.com/arsulegai/openssl \
+    golang.org/x/crypto/sha3
 
 WORKDIR /project/GoCryptoBenchmark/src
 
