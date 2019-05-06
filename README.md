@@ -11,6 +11,11 @@ benchmark numbers on the hardware.
 which can be found [here](https://github.com/arsulegai/openssl).
 All credits to the original authors.
 
+## Prerequisites
+The project has dependency on following libraries
+* OpenSSL version 1.1.1, please refer to docker/Dockerfile for information
+on installing it on Ubuntu if there's no debian distribution available.
+
 ## Build
 
 ### Docker build dependencies

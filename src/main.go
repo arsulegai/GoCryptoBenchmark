@@ -72,6 +72,9 @@ func (c *CryptoAlgorithm) Run(child interface{}) error {
 			result, err = child.(*Sha3_256).Compute(data)
 		case *Sha3_384:
 			result, err = child.(*Sha3_384).Compute(data)
+		case *Ecdsa_P256:
+			// performs both sign() and verify() on the data
+			result, err = child.(*Ecdsa_P256).Compute(data)
 		default:
 			break
 		}
@@ -109,6 +112,7 @@ func main() {
 		&Sha384{},
 		&Sha3_256{},
 		&Sha3_384{},
+		&Ecdsa_P256{},
 	}
 
 	for _, cmd := range commands {
