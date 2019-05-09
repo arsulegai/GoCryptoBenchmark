@@ -24,12 +24,40 @@ The build has been tested on these versions and same is recommended.
 * Docker compose version 1.22.0
 
 ### Procedure
-
+Run the following to generate `bin/gocryptobenchmark`
+(no Go compiler required):
 ```
 docker-compose -f docker/compose/docker-compose-build.yaml up
 ```
-**Note:** Generated binary is targeted for Ubuntu 18.04. Binary would be
+**Note:**
+1. Generated binary is targeted for Ubuntu 18.04. Binary would be
 stored in `bin` directory.
+2. If the build is successful, docker-compose up should exit with
+status code 0.
+
+## Run
+To run the benchmark using the OpenSSL and Go crypto, run the following:
+```
+./bin/gocryptobenchmark <CRYPTO ALGORITHM TO BENCHMARK> <LIBRARY>
+
+where
+  <CRYPTO ALGORITHM TO BENCHMARK> is one of
+    Sha256
+    Sha384
+    Sha512
+    Sha3_256
+    Sha3_384
+    Ecdsa_P256
+  <LIBRARY> is one of
+    openssl
+    crypto
+```
+For example, to benchmark Ecdsa_P256, the command is
+```
+./bin/gocryptobenchmark Ecdsa_P256 openssl
+./bin/gocryptobenchmark Ecdsa_P256 crypto
+```
+**Note:** For ECDSA P256, the data is first hashed using SHA 256.
 
 ## Contributing
 This software is in development phase and is Apache 2.0 licensed. We accept
