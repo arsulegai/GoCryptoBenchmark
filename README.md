@@ -59,6 +59,29 @@ For example, to benchmark Ecdsa_P256, the command is
 ```
 **Note:** For ECDSA P256, the data is first hashed using SHA 256.
 
+## Troubleshooting
+
+### Machine in proxy network
+If you're using the tool on a machine in a proxy network environment, the build
+may fail to get required packages. Please create a file `config.json` with following
+contents and place it under `/home/$USER/.docker/` directory. Create the directory
+if not present already. The file looks like the following
+
+```
+{
+ "proxies":
+ {
+   "default":
+   {
+     "httpProxy": "http://proxy-address-here:80",
+     "httpsProxy": "http://proxy-address-here:443",
+     "noProxy": "127.0.0.1,localhost",
+     "hkpProxy": "http://proxy-address-here:443"
+   }
+ }
+}
+```
+ 
 ## Contributing
 This software is in development phase and is Apache 2.0 licensed. We accept
 contributions via [GitHub](https://github.com/arsulegai/GoCryptoBenchmark) pull
