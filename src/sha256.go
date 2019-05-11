@@ -21,8 +21,8 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
-	"github.com/jessevdk/go-flags"
 	"github.com/arsulegai/openssl"
+	"github.com/jessevdk/go-flags"
 )
 
 type Sha256 struct {

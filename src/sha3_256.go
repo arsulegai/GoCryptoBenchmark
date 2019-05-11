@@ -18,11 +18,11 @@
 package main
 
 import (
-	"golang.org/x/crypto/sha3"
 	"errors"
 	"fmt"
-	"github.com/jessevdk/go-flags"
 	"github.com/arsulegai/openssl"
+	"github.com/jessevdk/go-flags"
+	"golang.org/x/crypto/sha3"
 )
 
 type Sha3_256 struct {

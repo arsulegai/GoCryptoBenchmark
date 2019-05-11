@@ -18,12 +18,12 @@
 package main
 
 import (
+	"crypto"
 	"crypto/ecdsa"
+	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
-	"crypto/elliptic"
 	"errors"
-	"crypto"
 	"fmt"
 	"github.com/arsulegai/openssl"
 	"github.com/jessevdk/go-flags"

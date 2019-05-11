@@ -22,6 +22,7 @@ import (
 	"fmt"
 	flags "github.com/jessevdk/go-flags"
 	"os"
+	"runtime/pprof"
 	"strconv"
 	"time"
 )
@@ -35,7 +36,8 @@ type Command interface {
 }
 
 type Opts struct {
-	Version bool `short:"V" long:"version" description:"Display version information"`
+	Version    bool   `short:"V" long:"version" description:"Display version information"`
+	CPUProfile string `short:"p" long:"profile" description:"Generate pprof CPU profile"`
 }
 
 type CryptoAlgorithm struct{}
@@ -139,6 +141,18 @@ func main() {
 
 	if parser.Command.Active == nil {
 		os.Exit(2)
+	}
+
+	cpuprofile := opts.CPUProfile
+	if cpuprofile != "" {
+		f, err := os.Create(cpuprofile)
+		if err != nil {
+			fmt.Errorf("Error creating profile")
+		}
+		defer f.Close()
+		fmt.Println("CPU Profile using pprof enabled")
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
 	}
 
 	name := parser.Command.Active.Name
