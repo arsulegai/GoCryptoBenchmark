@@ -148,6 +148,7 @@ func main() {
 		f, err := os.Create(cpuprofile)
 		if err != nil {
 			fmt.Errorf("Error creating profile")
+			os.Exit(1)
 		}
 		defer f.Close()
 		fmt.Println("CPU Profile using pprof enabled")
