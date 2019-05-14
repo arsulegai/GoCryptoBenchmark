@@ -96,11 +96,16 @@ func init() {
 }
 
 func main() {
+	return_status := 0
+	defer func() {
+		os.Exit(return_status)
+	}()
 	arguments := os.Args[1:]
 	for _, arg := range arguments {
 		if arg == "-V" || arg == "--version" {
 			fmt.Println(DISTRIBUTION_NAME + " version " + DISTRIBUTION_VERSION)
-			os.Exit(0)
+			return_status = 0
+			return
 		}
 	}
 
@@ -121,26 +126,28 @@ func main() {
 		err := cmd.Register(parser.Command)
 		if err != nil {
 			fmt.Errorf("Couldn't register command %v: %v", cmd.Name(), err)
-			os.Exit(1)
+			return_status = 1
+			return
 		}
 	}
 
 	remaining, err := parser.Parse()
 	if e, ok := err.(*flags.Error); ok {
-		if e.Type == flags.ErrHelp {
-			return
-		} else {
-			os.Exit(1)
+		if e.Type != flags.ErrHelp {
+			return_status = 1
 		}
+		return
 	}
 
 	if len(remaining) > 0 {
 		fmt.Println("Error: Unrecognized arguments passed: ", remaining)
-		os.Exit(2)
+		return_status = 2
+		return
 	}
 
 	if parser.Command.Active == nil {
-		os.Exit(2)
+		return_status = 2
+		return
 	}
 
 	cpuprofile := opts.CPUProfile
@@ -148,7 +155,8 @@ func main() {
 		f, err := os.Create(cpuprofile)
 		if err != nil {
 			fmt.Errorf("Error creating profile")
-			os.Exit(1)
+			return_status = 1
+			return
 		}
 		defer f.Close()
 		fmt.Println("CPU Profile using pprof enabled")
@@ -162,7 +170,7 @@ func main() {
 			err := cmd.Run("")
 			if err != nil {
 				fmt.Println("Error: ", err)
-				os.Exit(1)
+				return_status = 1
 			}
 			return
 		}
